@@ -58,6 +58,66 @@ class SignupForm extends Model
 
     }
 
+//___________________________________________________________
+
+//    public function signup()
+//    {
+//        if ($this->validate()) {
+//            $user = new User();
+//            $user->username = $this->username;
+//            $user->email = $this->email;
+//            $user->setPassword($this->password);
+//            $user->generateAuthKey();
+//            $user->save(false);
+//
+//            // нужно добавить следующие три строки:
+//            $auth = Yii::$app->authManager;
+//            $authorRole = $auth->getRole('author');
+//            $auth->assign($authorRole, $user->getId());
+//
+//            return $user;
+//        }
+//
+//        return null;
+//    }
+
+//____________________________________________________________________
+//    public function signup()
+//    {
+//        if ($this->validate()) {
+//
+//            $user = new User();
+//            $user->username = $this->username;
+//            $user->email = $this->email;
+//            $user->setPassword($this->password);
+//            $user->generateAuthKey();
+//            $user->generateEmailVerificationToken();
+//            // return $user->save() && $this->sendEmail($user);
+//            $user->save();
+//
+//            $permissionList = $_POST['SignupForm']['permissions'];
+//
+//            // var_dump($user->id);
+//            // exit;
+//            foreach ($permissionList as $value) {
+//
+//                $newPer = new AuthAssignment;
+//                $newPer->user_id = $user->id;
+//                $newPer->item_name = $value;
+//                $newPer->save();
+//
+//
+//            }
+//
+//            $this->sendEmail($user);
+//            return $user;
+//
+//        }
+//
+//    }
+
+
+
     /**
      * Sends confirmation email to user
      * @param User $user user model to with email should be send
