@@ -14,6 +14,11 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
+    'modules' => [
+        'v1' => [
+            'class' => 'frontend\modules\v1\Module',
+        ],
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
@@ -40,13 +45,22 @@ return [
             'errorAction' => 'site/error',
         ],
 
-        'urlManager' => [
-            'class' => 'codemix\localeurls\UrlManager',
-            'languages' => ['en', 'ru', 'uz'], // List all supported languages here
-//            'enablePrettyUrl' => true,
-//            'showScriptName' => false,
+//        'urlManager' => [
+//            'class' => 'codemix\localeurls\UrlManager',
+//            'languages' => ['en', 'ru', 'uz'], // List all supported languages here
+////            'enablePrettyUrl' => true,
+////            'showScriptName' => false,
+//
+//        ],
 
-        ],
+        'urlManager' => array(
+            'class' => \yii\web\UrlManager::class,
+            'showScriptName'	=> false,
+            'enablePrettyUrl'	=> true,
+            'rules'	=> frontend\modules\v1\Module::$urlRules,
+
+        ),
+
     ],
     'params' => $params,
 ];

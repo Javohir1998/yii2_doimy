@@ -1,63 +1,72 @@
 <?php
-use cinghie\multilanguage\widgets\MultiLanguageWidget;
 /* @var $this yii\web\View */
-
-$this->title = 'My Yii Application';
-echo MultiLanguageWidget::widget([
-    'addCurrentLang' => true, // add current lang
-    'calling_controller' => $this->context,
-    'image_type' => 'classic', // classic or rounded
-    'link_home' => true, // true or false
-    'widget_type' => 'classic', // classic or selector
-    'width' => '28'
-]);
-
 $this->title = 'My Yii Application';
 ?>
-<div class="site-index">
 
-    <div class="jumbotron">
-        <h1><?php echo \Yii::t('app', 'en');  echo Yii::$app->language; ?></h1>
+<div id="todoapp">
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+    <div class="title">
+        <h1>Todos</h1>
     </div>
 
-    <div class="body-content">
+    <div class="content">
 
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
+        <div id="create-todo">
+            <input id="new-todo" placeholder="What needs to be done?" type="text" />
+            <span class="ui-tooltip-top" style="display:none;">Press Enter to save this task</span>
         </div>
 
+        <div id="todos">
+            <input class="check mark-all-done" type="checkbox"/>
+            <label for="check-all">Mark all as complete</label>
+            <ul id="todo-list"></ul>
+        </div>
+
+        <div id="todo-stats"></div>
+
     </div>
+
 </div>
+
+
+<div id="credits">
+    Created by
+    <br />
+    <a href="http://jgn.me/">J&eacute;r&ocirc;me Gravel-Niquet</a>.
+    <br />Cleanup, edits: <a href="http://addyosmani.com">Addy Osmani</a>.
+    <br />TypeScript version by <a href="http://blogs.msdn.com/lukeh">Luke Hoban</a>.
+</div>
+
+
+<script type="text/template" id="item-template">
+    <div class="todo <%= done ? 'done' : '' %>">
+        <div class="display">
+            <input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
+            <label class="todo-content"><%= content %></label>
+            <span class="todo-destroy"></span>
+        </div>
+        <div class="edit">
+            <input class="todo-input" type="text" value="<%= content %>" />
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="stats-template">
+    <% if (total) { %>
+    <span class="todo-count">
+          <span class="number"><%= remaining %></span>
+          <span class="word"><%= remaining == 1 ? 'item' : 'items' %></span> left.
+        </span>
+    <% } %>
+    <% if (done) { %>
+    <span class="todo-clear">
+          <a href="#">
+            Clear <span class="number-done"><%= done %></span>
+            completed <span class="word-done"><%= done == 1 ? 'item' : 'items' %></span>
+          </a>
+        </span>
+    <% } %>
+</script>
+
+
+
