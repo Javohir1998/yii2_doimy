@@ -49,10 +49,14 @@ class ApiController extends Controller
         $product = Products::findOne($id);
         if ($product->chek == 0){
             $product->chek = 1;
+            $chek = true;
         }elseif ($product->chek == 1){
             $product->chek = 0;
+//            $chek = false;
         }
         $product->save();
+        return ['chek'=>$chek];
+
     }
     public function actionDelete($id)
     {
