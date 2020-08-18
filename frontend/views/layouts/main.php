@@ -37,8 +37,6 @@ AppAsset::register($this);
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span></button><a class="navbar-brand" href="/">My Application</a></div><div id="w0-collapse" class="collapse navbar-collapse">
                     <ul id="w1" class="navbar-nav navbar-right nav">
-                        <li class="active"><a href="<?= Url::to(['/site/index']) ?>">Home</a></li>
-                        <li><a href="<?= Url::to(['site/contact']) ?>">Contact</a></li>
                         <li><a href="<?= Url::to(['site/signup']) ?>">Signup</a></li>
                         <li><a href="<?= Url::to(['site/login']) ?>">Login</a></li>
                     </ul>
@@ -55,13 +53,6 @@ AppAsset::register($this);
     </div>
 </div>
 
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
-    </div>
-</footer>
 
 <?php $this->endBody() ?>
 </body>

@@ -1,7 +1,11 @@
 <?php
 namespace backend\controllers;
 
+use common\models\User;
+use common\rbac\models\Role;
+use frontend\models\SignupForm;
 use Yii;
+use yii\base\Exception;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -22,9 +26,17 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
+                        'actions' => ['login', 'error', 'signup'],
                         'allow' => true,
                     ],
+                    [
+                    'controllers' => ['user', 'site'],
+                    'actions' => [
+                        'index', 'chatdelete ', 'signup'
+                    ],
+                    'allow' => true,
+                    'roles' => ['User'],
+                ],
                     [
                         'actions' => ['logout', 'index'],
                         'allow' => true,
@@ -61,6 +73,43 @@ class SiteController extends Controller
     public function actionIndex()
     {
         return $this->render('index');
+    }
+
+    public function actionSignup()
+    {
+        $model = new SignupForm();
+        if ($model->load(Yii::$app->request->post())) {
+            Yii::$app->session->setFlash('success', 'Ro\'yxatdan o\'tganingiz uchun tashakkur.');
+            $user = new User();
+            $role = new Role();
+            $password=($_POST['SignupForm']["password"]);
+            $username=($_POST['SignupForm']["username"]);
+
+            $user->username = $username;
+            try {
+                $user->auth_key = Yii::$app->security->generateRandomString();
+            } catch (Exception $e) {
+            }
+            try {
+                $user->password_hash = Yii::$app->getSecurity()->generatePasswordHash($password);
+            } catch (Exception $e) {
+            }
+            $user->status=10;
+            $user->rule = 'User';
+            $user->verification_token=Yii::$app->user->identity;
+            if ($user->save()){
+                $role->user_id = $user->getId();
+                $role->item_name = 'User';
+                $role->save();
+            }
+            return $this->redirect(['/site/login']);
+        }else{
+            return $this->render('signup', [
+                'model' => $model,
+            ]);
+        }
+
+
     }
 
     /**

@@ -14,6 +14,8 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use common\models\User;
+use common\rbac\models\Role;
 
 /**
  * Site controller
@@ -28,7 +30,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
+                'only' => ['logout', 'signup', 'signup'],
                 'rules' => [
                     [
                         'actions' => ['signup'],
@@ -38,7 +40,7 @@ class SiteController extends Controller
                     [
                         'actions' => ['logout'],
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => ['?'],
                     ],
                 ],
             ],
@@ -74,7 +76,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        return $this->redirect('site/signup');
     }
 
     /**
@@ -84,6 +86,7 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -149,18 +152,37 @@ class SiteController extends Controller
      * Signs user up.
      *
      * @return mixed
+     * @throws \yii\base\Exception
      */
     public function actionSignup()
     {
         $model = new SignupForm();
-        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-            Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
-            return $this->goHome();
+        if ($model->load(Yii::$app->request->post())) {
+            Yii::$app->session->setFlash('success', 'Ro\'yxatdan o\'tganingiz uchun tashakkur.');
+            $user = new User();
+            $role = new Role();
+            $password=($_POST['SignupForm']["password"]);
+            $username=($_POST['SignupForm']["username"]);
+
+            $user->username = $username;
+            $user->auth_key= Yii::$app->security->generateRandomString();
+            $user->password_hash= Yii::$app->getSecurity()->generatePasswordHash($password);
+            $user->status=10;
+            $user->rule = 'User';
+            $user->verification_token=Yii::$app->user->identity;
+            if ($user->save()){
+                $role->user_id = $user->getId();
+                $role->item_name = 'User';
+                $role->save();
+            }
+            return $this->redirect(['/site/login']);
+        }else{
+            return $this->render('signup', [
+                'model' => $model,
+            ]);
         }
 
-        return $this->render('signup', [
-            'model' => $model,
-        ]);
+
     }
 
     /**

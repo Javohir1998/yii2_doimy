@@ -7,17 +7,18 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-$this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<br><br>
+<br><br>
 <div class="site-login">
     <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>Please fill out the following fields to login:</p>
-
-    <div class="row">
-        <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
+    <p class="text-center">Tizimga kirish  uchun quyidagi maydonlarni to'ldiring:</p>
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-sm-4"></div>
+            <div class="col-lg-4">
+                <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
                 <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 
@@ -25,11 +26,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= $form->field($model, 'rememberMe')->checkbox() ?>
 
+                <p>Ro‘yxatdan o‘tish <a href="<?=\yii\helpers\Url::to(["/site/signup"], true)?>">registration</a></p>
                 <div class="form-group">
                     <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
                 </div>
 
-            <?php ActiveForm::end(); ?>
+                <?php ActiveForm::end(); ?>
+            </div>
+            <div class="col-sm-4"></div>
         </div>
     </div>
 </div>
